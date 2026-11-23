@@ -26,10 +26,10 @@ The portfolio uses an iOS-inspired liquid glass interface, smooth animations, da
 
 ## Projects Showcased
 
-- **Word Scramble**: A browser-based word puzzle game built with HTML, CSS, and JavaScript.
-- **Expense Tracker**: A personal finance dashboard for tracking expenses and visualizing spending.
-- **Planora**: A travel planning UI concept focused on destination discovery and trip planning.
-- **Space Shooter**: A game project concept with arcade-style space shooter visuals and interaction flow.
+- **ShareBite**: A full-stack surplus food recovery & NGO redistribution platform connecting restaurants, caterers, and food donors with nearby NGOs.
+- **Planora**: A smart travel planning and dynamic itinerary engine with weather forecasts and destination discovery.
+- **Expense Trail**: A full-stack personal finance and budget management web app for tracking expenses and visualizing spending patterns.
+- **Word Scramble**: An interactive browser puzzle game built with HTML, CSS, and JavaScript.
 
 ## Folder Structure
 
@@ -53,24 +53,28 @@ Varun_Portfolio/
 Clone the repository:
 
 ```bash
-git clone https://github.com/varun9761/your-repo-name.git
+git clone https://github.com/varun9761/Portfolio.git
 ```
 
 Open the project folder:
 
 ```bash
-cd your-repo-name
+cd Portfolio
 ```
 
 Run the website by opening `index.html` in your browser.
 
 No build step or package installation is required.
 
+## Live Demo
+
+- Portfolio: [varun-zeta-portfolio.vercel.app](https://varun-zeta-portfolio.vercel.app)
+
 ## Contact
 
 - Email: [varunkumardev92@gmail.com](mailto:varunkumardev92@gmail.com)
 - GitHub: [github.com/varun9761](https://github.com/varun9761)
-- LinkedIn: [varun-kumar-6a6926252](https://www.linkedin.com/in/varun-kumar-6a6926252)
+- LinkedIn: [varun-kumar9761](https://www.linkedin.com/in/varun-kumar9761)
 
 ## License
 
