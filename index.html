@@ -31,10 +31,11 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
     <div class="page-frame">
       <header class="site-header">
         <a class="brand" href="#home">VK</a>
-        <nav class="site-nav" aria-label="Primary">
+        <nav class="site-nav" id="primary-nav" aria-label="Primary">
           <a href="#home" class="is-active">Home</a>
           <a href="#about">About</a>
           <a href="#projects">Projects</a>
@@ -55,6 +56,16 @@
           <a class="header-cta" href="assets/VARUNRESUME.pdf" download
             >Resume</a
           >
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-label="Toggle navigation menu"
+            aria-expanded="false"
+            aria-controls="primary-nav"
+          >
+            <span class="nav-toggle-line" aria-hidden="true"></span>
+            <span class="nav-toggle-line" aria-hidden="true"></span>
+          </button>
         </div>
       </header>
 
@@ -494,14 +505,15 @@
               action="mailto:varunkumardev92@gmail.com"
               method="post"
               enctype="text/plain"
+              novalidate
             >
               <label>
                 Name
-                <input type="text" name="name" placeholder="Your name" />
+                <input type="text" name="name" placeholder="Your name" required />
               </label>
               <label>
                 Email
-                <input type="email" name="email" placeholder="Your email" />
+                <input type="email" name="email" placeholder="Your email" required />
               </label>
               <label>
                 Message
@@ -509,9 +521,11 @@
                   name="message"
                   rows="6"
                   placeholder="Write your message"
+                  required
                 ></textarea>
               </label>
               <button type="submit">Send</button>
+              <p class="form-status" id="contact-status" role="status" aria-live="polite"></p>
             </form>
           </div>
 

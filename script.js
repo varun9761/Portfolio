@@ -1,6 +1,7 @@
 const revealElements = document.querySelectorAll(".reveal");
 const themeToggle = document.querySelector(".theme-toggle");
 const themeToggleText = document.querySelector(".theme-toggle-text");
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const applyTheme = (theme) => {
   document.body.dataset.theme = theme;
@@ -29,24 +30,52 @@ if (themeToggle) {
   });
 }
 
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  {
-    threshold: 0.15,
-  }
-);
+// Reveal sections immediately as they enter or pass the viewport (safe for tall mobile sections & anchor jumps)
+const revealVisibleInViewport = () => {
+  const triggerBottom = window.innerHeight * 1.02;
+  revealElements.forEach((element) => {
+    if (element.classList.contains("is-visible")) return;
+    const rect = element.getBoundingClientRect();
+    if (rect.top <= triggerBottom) {
+      element.classList.add("is-visible");
+    }
+  });
+};
 
-revealElements.forEach((element) => revealObserver.observe(element));
+if (prefersReducedMotion) {
+  revealElements.forEach((element) => element.classList.add("is-visible"));
+} else {
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.01,
+      rootMargin: "0px 0px -16px 0px",
+    }
+  );
+
+  revealElements.forEach((element) => revealObserver.observe(element));
+  window.addEventListener("load", revealVisibleInViewport);
+  window.addEventListener("scroll", revealVisibleInViewport, { passive: true });
+  window.addEventListener("resize", revealVisibleInViewport, { passive: true });
+  window.addEventListener("hashchange", () => {
+    window.requestAnimationFrame(revealVisibleInViewport);
+  });
+  revealVisibleInViewport();
+}
 
 const typeText = (element, text, speed = 70, callback) => {
-  if (!element) {
+  if (!element) return;
+
+  if (prefersReducedMotion) {
+    element.textContent = text;
+    if (callback) callback();
     return;
   }
 
@@ -75,7 +104,124 @@ typeText(document.querySelector("#typed-name"), "VARUN", 110, () => {
 });
 
 // ==========================================================================
-// STACKED PROJECT CARDS SCROLL PHYSICS
+// DYNAMIC MOBILE NAVIGATION DRAWER
+// ==========================================================================
+const initMobileMenu = () => {
+  const header = document.querySelector(".site-header");
+  const navToggle = document.querySelector(".nav-toggle");
+  const navLinks = document.querySelectorAll(".site-nav a");
+  if (!header || !navToggle) return;
+
+  const setMenuOpen = (isOpen) => {
+    header.classList.toggle("is-menu-open", isOpen);
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+  };
+
+  navToggle.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const nextState = !header.classList.contains("is-menu-open");
+    setMenuOpen(nextState);
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      setMenuOpen(false);
+      const targetId = link.getAttribute("href");
+      const targetEl = targetId ? document.querySelector(targetId) : null;
+      if (targetEl) targetEl.classList.add("is-visible");
+      window.setTimeout(revealVisibleInViewport, 80);
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (header.classList.contains("is-menu-open") && !header.contains(event.target)) {
+      setMenuOpen(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && header.classList.contains("is-menu-open")) {
+      setMenuOpen(false);
+      navToggle.focus();
+    }
+  });
+
+  window.addEventListener(
+    "resize",
+    () => {
+      if (window.innerWidth > 780 && header.classList.contains("is-menu-open")) {
+        setMenuOpen(false);
+      }
+    },
+    { passive: true }
+  );
+};
+
+initMobileMenu();
+
+// ==========================================================================
+// DYNAMIC SCROLL PROGRESS & ACTIVE SECTION SCROLL-SPY
+// ==========================================================================
+const initScrollDynamics = () => {
+  const progressBar = document.querySelector(".scroll-progress");
+  const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
+  const sections = navLinks
+    .map((link) => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  let ticking = false;
+
+  const updateScrollUI = () => {
+    ticking = false;
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+    if (progressBar) {
+      const progress = docHeight > 0 ? Math.max(0, Math.min(1, scrollTop / docHeight)) : 0;
+      progressBar.style.setProperty("--scroll-progress", progress.toFixed(4));
+    }
+
+    if (sections.length === 0) return;
+
+    const atBottom = docHeight > 0 && scrollTop + window.innerHeight >= document.documentElement.scrollHeight - 24;
+    let activeId = sections[0].id;
+
+    if (atBottom) {
+      activeId = sections[sections.length - 1].id;
+    } else {
+      const markerY = Math.min(220, window.innerHeight * 0.32);
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= markerY) {
+          activeId = section.id;
+        }
+      }
+    }
+
+    navLinks.forEach((link) => {
+      const isMatch = link.getAttribute("href") === `#${activeId}`;
+      link.classList.toggle("is-active", isMatch);
+    });
+  };
+
+  const onScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateScrollUI);
+      ticking = true;
+    }
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  window.addEventListener("load", updateScrollUI);
+  window.addEventListener("hashchange", updateScrollUI);
+  updateScrollUI();
+};
+
+initScrollDynamics();
+
+// ==========================================================================
+// STACKED PROJECT CARDS SCROLL PHYSICS (DESKTOP & TABLET)
 // ==========================================================================
 const initStackedCards = () => {
   const stackContainer = document.querySelector(".projects-stack-container");
@@ -90,10 +236,10 @@ const initStackedCards = () => {
   const updateCardTransforms = () => {
     ticking = false;
 
-    if (window.innerWidth <= 640) {
+    if (window.innerWidth <= 780 || window.innerHeight < 560) {
       cards.forEach((card) => {
-        card.style.transform = "none";
-        card.style.filter = "none";
+        card.style.transform = "";
+        card.style.filter = "";
       });
       return;
     }
@@ -135,8 +281,52 @@ const initStackedCards = () => {
 
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
+  window.addEventListener("load", updateCardTransforms);
+  window.addEventListener("hashchange", updateCardTransforms);
   updateCardTransforms();
 };
 
 initStackedCards();
 
+// ==========================================================================
+// DYNAMIC CONTACT FORM HANDLER
+// ==========================================================================
+const initContactForm = () => {
+  const form = document.querySelector(".contact-form");
+  const statusEl = document.querySelector("#contact-status");
+  if (!form || !statusEl) return;
+
+  const setStatus = (message, isError = false) => {
+    statusEl.textContent = message;
+    statusEl.classList.toggle("is-error", isError);
+  };
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+
+    if (!name || !email || !message) {
+      setStatus("Please fill in your name, email, and message before sending.", true);
+      return;
+    }
+
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailValid) {
+      setStatus("Please enter a valid email address.", true);
+      return;
+    }
+
+    const subject = encodeURIComponent(`Portfolio Inquiry from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    const mailtoUrl = `mailto:varunkumardev92@gmail.com?subject=${subject}&body=${body}`;
+
+    setStatus("Opening your email app to send the message...");
+    window.location.href = mailtoUrl;
+  });
+};
+
+initContactForm();
