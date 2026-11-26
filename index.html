@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -31,6 +31,11 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="ambient-aura" aria-hidden="true">
+      <span class="aura-orb aura-orb-1"></span>
+      <span class="aura-orb aura-orb-2"></span>
+      <span class="aura-orb aura-orb-3"></span>
+    </div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="page-frame">
       <header class="site-header">
@@ -73,7 +78,10 @@
         <section class="hero-section">
           <div class="hero-stage reveal">
             <div class="hero-grid-lines" aria-hidden="true"></div>
-            <p class="hero-chip">Hey There I'm</p>
+            <p class="hero-chip">
+              <span class="status-dot" aria-hidden="true"></span>
+              Open to SDE &amp; Full-Stack Roles &bull; Noida, IN
+            </p>
             <div class="hero-background-text" aria-hidden="true">
               <span>FULL STACK DEVELOPER</span>
               <span>COMPUTER SCIENCE STUDENT</span>
@@ -242,7 +250,7 @@
 
           <div class="projects-stack-container" data-total-cards="4">
             <!-- Card 1: Word Scramble -->
-            <article class="stacked-project-card" data-index="0" style="--card-index: 0;">
+            <article class="stacked-project-card" data-index="0" data-project="word-scramble" style="--card-index: 0;">
               <div class="project-card-header">
                 <div class="project-card-left">
                   <span class="project-card-num">01</span>
@@ -252,6 +260,13 @@
                   </div>
                 </div>
                 <div class="project-card-actions">
+                  <button
+                    type="button"
+                    class="project-details-btn"
+                    data-open-project="word-scramble"
+                  >
+                    Architecture
+                  </button>
                   <a
                     href="https://github.com/varun9761/Word-Scramble"
                     target="_blank"
@@ -289,20 +304,27 @@
                 </div>
 
                 <div class="project-card-photo-pane">
-                  <div class="project-photo-wrap">
+                  <div
+                    class="project-photo-wrap is-interactive"
+                    role="button"
+                    tabindex="0"
+                    data-open-project="word-scramble"
+                    aria-label="Inspect Word Scramble architecture"
+                  >
                     <img
                       src="assets/word-scramble.png?v=2"
                       alt="Word Scramble game preview"
                       class="project-hero-photo"
                       loading="lazy"
                     />
+                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
                   </div>
                 </div>
               </div>
             </article>
 
             <!-- Card 2: Expense Trail -->
-            <article class="stacked-project-card" data-index="1" style="--card-index: 1;">
+            <article class="stacked-project-card" data-index="1" data-project="expense-trail" style="--card-index: 1;">
               <div class="project-card-header">
                 <div class="project-card-left">
                   <span class="project-card-num">02</span>
@@ -312,6 +334,13 @@
                   </div>
                 </div>
                 <div class="project-card-actions">
+                  <button
+                    type="button"
+                    class="project-details-btn"
+                    data-open-project="expense-trail"
+                  >
+                    Architecture
+                  </button>
                   <a
                     href="https://expense-trail.vercel.app/"
                     target="_blank"
@@ -349,20 +378,27 @@
                 </div>
 
                 <div class="project-card-photo-pane">
-                  <div class="project-photo-wrap">
+                  <div
+                    class="project-photo-wrap is-interactive"
+                    role="button"
+                    tabindex="0"
+                    data-open-project="expense-trail"
+                    aria-label="Inspect Expense Trail architecture"
+                  >
                     <img
                       src="assets/expense-trail.png?v=2"
                       alt="Expense Trail project preview"
                       class="project-hero-photo"
                       loading="lazy"
                     />
+                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
                   </div>
                 </div>
               </div>
             </article>
 
             <!-- Card 3: Planora -->
-            <article class="stacked-project-card" data-index="2" style="--card-index: 2;">
+            <article class="stacked-project-card" data-index="2" data-project="planora" style="--card-index: 2;">
               <div class="project-card-header">
                 <div class="project-card-left">
                   <span class="project-card-num">03</span>
@@ -372,6 +408,13 @@
                   </div>
                 </div>
                 <div class="project-card-actions">
+                  <button
+                    type="button"
+                    class="project-details-btn"
+                    data-open-project="planora"
+                  >
+                    Architecture
+                  </button>
                   <a
                     href="https://planora-flax.vercel.app/"
                     target="_blank"
@@ -410,20 +453,27 @@
                 </div>
 
                 <div class="project-card-photo-pane">
-                  <div class="project-photo-wrap">
+                  <div
+                    class="project-photo-wrap is-interactive"
+                    role="button"
+                    tabindex="0"
+                    data-open-project="planora"
+                    aria-label="Inspect Planora architecture"
+                  >
                     <img
                       src="assets/planora.png?v=1"
                       alt="Planora travel app project preview"
                       class="project-hero-photo"
                       loading="lazy"
                     />
+                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
                   </div>
                 </div>
               </div>
             </article>
 
             <!-- Card 4: ShareBite -->
-            <article class="stacked-project-card" data-index="3" style="--card-index: 3;">
+            <article class="stacked-project-card" data-index="3" data-project="sharebite" style="--card-index: 3;">
               <div class="project-card-header">
                 <div class="project-card-left">
                   <span class="project-card-num">04</span>
@@ -433,6 +483,13 @@
                   </div>
                 </div>
                 <div class="project-card-actions">
+                  <button
+                    type="button"
+                    class="project-details-btn"
+                    data-open-project="sharebite"
+                  >
+                    Architecture
+                  </button>
                   <a
                     href="https://sharebite-client-iota.vercel.app/"
                     target="_blank"
@@ -472,13 +529,20 @@
                 </div>
 
                 <div class="project-card-photo-pane">
-                  <div class="project-photo-wrap">
+                  <div
+                    class="project-photo-wrap is-interactive"
+                    role="button"
+                    tabindex="0"
+                    data-open-project="sharebite"
+                    aria-label="Inspect ShareBite architecture"
+                  >
                     <img
                       src="assets/sharebite.jpg"
                       alt="ShareBite surplus food recovery platform"
                       class="project-hero-photo"
                       loading="lazy"
                     />
+                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
                   </div>
                 </div>
               </div>
@@ -498,6 +562,20 @@
                 If you are interested in my work, internship profile, or want to
                 connect regarding projects and ideas, feel free to reach out.
               </p>
+              <div class="contact-quick-actions">
+                <button
+                  type="button"
+                  class="copy-email-btn"
+                  data-copy-email="varunkumardev92@gmail.com"
+                >
+                  <span class="copy-email-value">varunkumardev92@gmail.com</span>
+                  <span class="copy-email-badge">Copy</span>
+                </button>
+                <div class="contact-meta">
+                  <span>Noida, UP, India</span>
+                  <span>+91-9761629781</span>
+                </div>
+              </div>
             </div>
 
             <form
@@ -538,6 +616,79 @@
           </div>
         </section>
       </main>
+
+      <div
+        class="project-modal-backdrop"
+        id="project-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-project-title"
+        hidden
+      >
+        <div class="project-modal">
+          <div class="project-modal-header">
+            <div class="project-modal-title-group">
+              <div class="project-modal-meta">
+                <span class="project-modal-num" id="modal-project-num">01</span>
+                <span class="project-modal-badge" id="modal-project-badge">Category</span>
+              </div>
+              <h3 class="project-modal-title" id="modal-project-title">Project Title</h3>
+            </div>
+            <button
+              type="button"
+              class="project-modal-close"
+              id="modal-close-btn"
+              aria-label="Close architecture modal"
+            >
+              &times;
+            </button>
+          </div>
+
+          <div class="project-modal-body">
+            <div class="project-modal-media">
+              <img id="modal-project-image" src="" alt="" />
+            </div>
+            <div class="project-modal-details">
+              <p class="project-modal-summary" id="modal-project-summary"></p>
+              <h4 class="project-modal-subtitle">Engineering &amp; Architecture</h4>
+              <ul class="project-modal-highlights" id="modal-project-highlights"></ul>
+              <h4 class="project-modal-subtitle">Technology Stack</h4>
+              <div class="project-modal-tech" id="modal-project-tech"></div>
+            </div>
+          </div>
+
+          <div class="project-modal-footer">
+            <div class="project-modal-pager">
+              <button type="button" class="modal-nav-btn" id="modal-prev-btn">&larr; Prev</button>
+              <button type="button" class="modal-nav-btn" id="modal-next-btn">Next &rarr;</button>
+            </div>
+            <div class="project-modal-links">
+              <a
+                href="#"
+                target="_blank"
+                rel="noreferrer"
+                class="project-live-btn"
+                id="modal-live-link"
+              >
+                <span>Live Project</span>
+                <span class="btn-arrow" aria-hidden="true">&#8599;</span>
+              </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noreferrer"
+                class="project-github-btn"
+                id="modal-github-link"
+                aria-label="View project on GitHub"
+              >
+                <i class="devicon-github-original" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast-banner" id="toast-banner" role="status" aria-live="polite"></div>
     </div>
 
     <script src="script.js"></script>
