@@ -18,6 +18,64 @@
       name="keywords"
       content="Varun Kumar portfolio, full stack developer, software engineer, JSS Noida, React, Node.js, PostgreSQL, Python"
     />
+    <meta name="author" content="Varun Kumar" />
+    <meta name="theme-color" content="#04070d" />
+    <link rel="canonical" href="https://varun-zeta-portfolio.vercel.app/" />
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <!-- Open Graph / Social Link Preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://varun-zeta-portfolio.vercel.app/" />
+    <meta property="og:title" content="Varun Kumar | Full Stack Software Engineer" />
+    <meta
+      property="og:description"
+      content="MCA candidate at JSS Academy of Technical Education Noida building scalable web apps with React 19, Node.js, Python, and PostgreSQL."
+    />
+    <meta
+      property="og:image"
+      content="https://varun-zeta-portfolio.vercel.app/assets/og-preview.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter / X Preview -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Varun Kumar | Full Stack Software Engineer" />
+    <meta
+      name="twitter:description"
+      content="Full Stack Engineer building geospatial platforms, RESTful APIs, and modern spatial web apps."
+    />
+    <meta
+      name="twitter:image"
+      content="https://varun-zeta-portfolio.vercel.app/assets/og-preview.jpg"
+    />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Varun Kumar",
+        "url": "https://varun-zeta-portfolio.vercel.app/",
+        "email": "mailto:varunkumardev92@gmail.com",
+        "jobTitle": "Full Stack Software Engineer",
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "JSS Academy of Technical Education, Noida"
+          },
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Invertis University, Bareilly"
+          }
+        ],
+        "sameAs": [
+          "https://www.linkedin.com/in/varun-kumar9761",
+          "https://github.com/varun9761"
+        ],
+        "knowsAbout": ["React.js", "Node.js", "Express.js", "Python", "Flask", "PostgreSQL", "Java", "JavaScript", "Tailwind CSS"]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -61,6 +119,15 @@
           <a class="header-cta" href="assets/VARUNRESUME.pdf" download
             >Resume</a
           >
+          <button
+            class="cmd-trigger"
+            type="button"
+            id="cmd-trigger"
+            aria-label="Open command palette (Ctrl+K)"
+            title="Quick Command Menu (Ctrl+K)"
+          >
+            <span aria-hidden="true">&#8984;K</span>
+          </button>
           <button
             class="nav-toggle"
             type="button"
@@ -155,6 +222,13 @@
                 <a class="primary-button" href="assets/VARUNRESUME.pdf" download
                   >Download Resume</a
                 >
+                <button
+                  class="secondary-button"
+                  type="button"
+                  data-open-resume
+                >
+                  Preview Resume
+                </button>
               </div>
             </div>
           </div>
@@ -196,6 +270,15 @@
                 <span class="skill-icon-badge" data-label="Git"
                   ><i class="devicon-git-plain colored"></i
                 ></span>
+                <span class="skill-icon-badge" data-label="Java"
+                  ><i class="devicon-java-plain colored"></i
+                ></span>
+                <span class="skill-icon-badge" data-label="Flask"
+                  ><i class="devicon-flask-original"></i
+                ></span>
+                <span class="skill-icon-badge" data-label="Postman"
+                  ><i class="devicon-postman-plain colored"></i
+                ></span>
               </div>
             </div>
 
@@ -234,6 +317,75 @@
             </div>
           </div>
 
+          <div class="credentials-bento" aria-label="Academic credentials and certifications">
+            <div class="edu-card">
+              <div class="credential-header">
+                <h3>Education</h3>
+                <span class="credential-badge">Academic Timeline</span>
+              </div>
+              <div class="edu-timeline">
+                <div class="edu-item">
+                  <div class="edu-meta">
+                    <span class="edu-degree">Master of Computer Applications (MCA)</span>
+                    <span class="edu-date">Since Aug 2025</span>
+                  </div>
+                  <p class="edu-school">JSS Academy of Technical Education, Noida</p>
+                  <span class="edu-score">CGPA: 7.56</span>
+                </div>
+                <div class="edu-item">
+                  <div class="edu-meta">
+                    <span class="edu-degree">B.Sc. Computer Science</span>
+                    <span class="edu-date">Aug 2022 – Aug 2025</span>
+                  </div>
+                  <p class="edu-school">Invertis University, Bareilly</p>
+                  <span class="edu-score">CGPA: 7.20</span>
+                </div>
+                <div class="edu-item">
+                  <div class="edu-meta">
+                    <span class="edu-degree">Class XII &amp; Class X</span>
+                    <span class="edu-date">2019 – 2022</span>
+                  </div>
+                  <p class="edu-school">St. Thomas Sr. Sec. School, Shahjahanpur</p>
+                  <span class="edu-score">XII: 66% · X: 80%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cert-card">
+              <div class="credential-header">
+                <h3>Certifications &amp; Practices</h3>
+                <span class="credential-badge">Verified</span>
+              </div>
+              <div class="cert-list">
+                <div class="cert-item">
+                  <div>
+                    <span class="cert-title">ADCA — Advanced Diploma in Computer Applications</span>
+                    <span class="cert-org">Verified Academic Credential</span>
+                  </div>
+                  <span class="edu-score">Grade: A+</span>
+                </div>
+                <div class="cert-item">
+                  <div>
+                    <span class="cert-title">CCC — Course on Computer Concepts</span>
+                    <span class="cert-org">National Institute of Electronics &amp; IT (NIELIT)</span>
+                  </div>
+                  <span class="edu-date">Aug 2022</span>
+                </div>
+              </div>
+              <div class="practice-block">
+                <span class="practice-label">Engineering Methodologies</span>
+                <div class="engineering-tags">
+                  <span>SDLC</span>
+                  <span>STLC</span>
+                  <span>RESTful APIs</span>
+                  <span>API Testing</span>
+                  <span>TDD Principles</span>
+                  <span>OOP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="quote-panel">
             <div class="quote-mark" aria-hidden="true">VK</div>
             <p>
@@ -249,234 +401,11 @@
           </div>
 
           <div class="projects-stack-container" data-total-cards="4">
-            <!-- Card 1: Word Scramble -->
-            <article class="stacked-project-card" data-index="0" data-project="word-scramble" style="--card-index: 0;">
+            <!-- Card 1: ShareBite -->
+            <article class="stacked-project-card" data-index="0" data-project="sharebite" style="--card-index: 0;">
               <div class="project-card-header">
                 <div class="project-card-left">
                   <span class="project-card-num">01</span>
-                  <div class="project-card-title-group">
-                    <span class="project-card-badge">Frontend</span>
-                    <h3 class="project-card-title">Word Scramble</h3>
-                  </div>
-                </div>
-                <div class="project-card-actions">
-                  <button
-                    type="button"
-                    class="project-details-btn"
-                    data-open-project="word-scramble"
-                  >
-                    Architecture
-                  </button>
-                  <a
-                    href="https://github.com/varun9761/Word-Scramble"
-                    target="_blank"
-                    rel="noreferrer"
-                    class="project-live-btn"
-                  >
-                    <span>Live Project</span>
-                    <span class="btn-arrow" aria-hidden="true">↗</span>
-                  </a>
-                  <a
-                    href="https://github.com/varun9761/Word-Scramble"
-                    target="_blank"
-                    rel="noreferrer"
-                    class="project-github-btn"
-                    aria-label="View Word Scramble on GitHub"
-                  >
-                    <i class="devicon-github-original" aria-hidden="true"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="project-card-content">
-                <div class="project-card-info-pane">
-                  <p class="project-card-desc">
-                    A word puzzle web app that challenges users to guess the correct word from scrambled letters while practicing logic, UI interaction, and game flow handling.
-                  </p>
-                  <p class="project-card-note">
-                    Interactive UI logic, clean front-end structure, and game-style user flow.
-                  </p>
-                  <div class="project-card-tech" aria-label="Word Scramble technologies">
-                    <span class="tech-pill" title="HTML5"><i class="devicon-html5-plain colored"></i> HTML5</span>
-                    <span class="tech-pill" title="CSS3"><i class="devicon-css3-plain colored"></i> CSS3</span>
-                    <span class="tech-pill" title="JavaScript"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
-                  </div>
-                </div>
-
-                <div class="project-card-photo-pane">
-                  <div
-                    class="project-photo-wrap is-interactive"
-                    role="button"
-                    tabindex="0"
-                    data-open-project="word-scramble"
-                    aria-label="Inspect Word Scramble architecture"
-                  >
-                    <img
-                      src="assets/word-scramble.png?v=2"
-                      alt="Word Scramble game preview"
-                      class="project-hero-photo"
-                      loading="lazy"
-                    />
-                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- Card 2: Expense Trail -->
-            <article class="stacked-project-card" data-index="1" data-project="expense-trail" style="--card-index: 1;">
-              <div class="project-card-header">
-                <div class="project-card-left">
-                  <span class="project-card-num">02</span>
-                  <div class="project-card-title-group">
-                    <span class="project-card-badge">Full Stack</span>
-                    <h3 class="project-card-title">Expense Trail</h3>
-                  </div>
-                </div>
-                <div class="project-card-actions">
-                  <button
-                    type="button"
-                    class="project-details-btn"
-                    data-open-project="expense-trail"
-                  >
-                    Architecture
-                  </button>
-                  <a
-                    href="https://expense-trail.vercel.app/"
-                    target="_blank"
-                    rel="noreferrer"
-                    class="project-live-btn"
-                  >
-                    <span>Live Project</span>
-                    <span class="btn-arrow" aria-hidden="true">↗</span>
-                  </a>
-                  <a
-                    href="https://github.com/varun9761/expense-trail"
-                    target="_blank"
-                    rel="noreferrer"
-                    class="project-github-btn"
-                    aria-label="View Expense Trail on GitHub"
-                  >
-                    <i class="devicon-github-original" aria-hidden="true"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="project-card-content">
-                <div class="project-card-info-pane">
-                  <p class="project-card-desc">
-                    A responsive personal finance management tool to record daily expenses, organize custom budget categories, and visualize spending trends.
-                  </p>
-                  <p class="project-card-note">
-                    Implemented persistent client-side state caching via LocalStorage for zero-latency data recovery and offline usability.
-                  </p>
-                  <div class="project-card-tech" aria-label="Expense Trail technologies">
-                    <span class="tech-pill" title="React"><i class="devicon-react-original colored"></i> React</span>
-                    <span class="tech-pill" title="JavaScript"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
-                    <span class="tech-pill" title="Tailwind CSS"><i class="devicon-tailwindcss-plain colored"></i> Tailwind CSS</span>
-                  </div>
-                </div>
-
-                <div class="project-card-photo-pane">
-                  <div
-                    class="project-photo-wrap is-interactive"
-                    role="button"
-                    tabindex="0"
-                    data-open-project="expense-trail"
-                    aria-label="Inspect Expense Trail architecture"
-                  >
-                    <img
-                      src="assets/expense-trail.png?v=2"
-                      alt="Expense Trail project preview"
-                      class="project-hero-photo"
-                      loading="lazy"
-                    />
-                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- Card 3: Planora -->
-            <article class="stacked-project-card" data-index="2" data-project="planora" style="--card-index: 2;">
-              <div class="project-card-header">
-                <div class="project-card-left">
-                  <span class="project-card-num">03</span>
-                  <div class="project-card-title-group">
-                    <span class="project-card-badge">Full Stack / Travel Engine</span>
-                    <h3 class="project-card-title">Planora</h3>
-                  </div>
-                </div>
-                <div class="project-card-actions">
-                  <button
-                    type="button"
-                    class="project-details-btn"
-                    data-open-project="planora"
-                  >
-                    Architecture
-                  </button>
-                  <a
-                    href="https://planora-flax.vercel.app/"
-                    target="_blank"
-                    rel="noreferrer"
-                    class="project-live-btn"
-                  >
-                    <span>Live Project</span>
-                    <span class="btn-arrow" aria-hidden="true">↗</span>
-                  </a>
-                  <a
-                    href="https://github.com/varun9761/PLANORA"
-                    target="_blank"
-                    rel="noreferrer"
-                    class="project-github-btn"
-                    aria-label="View Planora on GitHub"
-                  >
-                    <i class="devicon-github-original" aria-hidden="true"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="project-card-content">
-                <div class="project-card-info-pane">
-                  <p class="project-card-desc">
-                    An end-to-end travel itinerary platform utilizing Flask REST APIs to generate day-by-day itineraries, live meteorological forecasts, and hotel recommendations.
-                  </p>
-                  <p class="project-card-note">
-                    Integrated Open-Meteo & OpenTripMap APIs for dynamic weather-aware packing checklists, multi-currency budget calculators, and 1-click PDF export.
-                  </p>
-                  <div class="project-card-tech" aria-label="Planora technologies">
-                    <span class="tech-pill" title="Python"><i class="devicon-python-plain colored"></i> Python</span>
-                    <span class="tech-pill" title="Flask"><i class="devicon-flask-original"></i> Flask</span>
-                    <span class="tech-pill" title="JavaScript"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
-                    <span class="tech-pill" title="Tailwind CSS"><i class="devicon-tailwindcss-plain colored"></i> Tailwind CSS</span>
-                  </div>
-                </div>
-
-                <div class="project-card-photo-pane">
-                  <div
-                    class="project-photo-wrap is-interactive"
-                    role="button"
-                    tabindex="0"
-                    data-open-project="planora"
-                    aria-label="Inspect Planora architecture"
-                  >
-                    <img
-                      src="assets/planora.png?v=1"
-                      alt="Planora travel app project preview"
-                      class="project-hero-photo"
-                      loading="lazy"
-                    />
-                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- Card 4: ShareBite -->
-            <article class="stacked-project-card" data-index="3" data-project="sharebite" style="--card-index: 3;">
-              <div class="project-card-header">
-                <div class="project-card-left">
-                  <span class="project-card-num">04</span>
                   <div class="project-card-title-group">
                     <span class="project-card-badge">Full Stack / NGO Platform</span>
                     <h3 class="project-card-title">ShareBite</h3>
@@ -536,12 +465,255 @@
                     data-open-project="sharebite"
                     aria-label="Inspect ShareBite architecture"
                   >
-                    <img
-                      src="assets/sharebite.jpg"
-                      alt="ShareBite surplus food recovery platform"
-                      class="project-hero-photo"
-                      loading="lazy"
-                    />
+                    <picture>
+                      <source srcset="assets/sharebite.webp" type="image/webp" />
+                      <img
+                        src="assets/sharebite.jpg"
+                        alt="ShareBite surplus food recovery platform"
+                        class="project-hero-photo"
+                        width="1024"
+                        height="561"
+                        loading="lazy"
+                      />
+                    </picture>
+                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 2: Planora -->
+            <article class="stacked-project-card" data-index="1" data-project="planora" style="--card-index: 1;">
+              <div class="project-card-header">
+                <div class="project-card-left">
+                  <span class="project-card-num">02</span>
+                  <div class="project-card-title-group">
+                    <span class="project-card-badge">Full Stack / Travel Engine</span>
+                    <h3 class="project-card-title">Planora</h3>
+                  </div>
+                </div>
+                <div class="project-card-actions">
+                  <button
+                    type="button"
+                    class="project-details-btn"
+                    data-open-project="planora"
+                  >
+                    Architecture
+                  </button>
+                  <a
+                    href="https://planora-flax.vercel.app/"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="project-live-btn"
+                  >
+                    <span>Live Project</span>
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
+                  </a>
+                  <a
+                    href="https://github.com/varun9761/PLANORA"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="project-github-btn"
+                    aria-label="View Planora on GitHub"
+                  >
+                    <i class="devicon-github-original" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="project-card-content">
+                <div class="project-card-info-pane">
+                  <p class="project-card-desc">
+                    An end-to-end travel itinerary platform utilizing Flask REST APIs to generate day-by-day itineraries, live meteorological forecasts, and hotel recommendations.
+                  </p>
+                  <p class="project-card-note">
+                    Integrated Open-Meteo & OpenTripMap APIs for dynamic weather-aware packing checklists, multi-currency budget calculators, and 1-click PDF export.
+                  </p>
+                  <div class="project-card-tech" aria-label="Planora technologies">
+                    <span class="tech-pill" title="Python"><i class="devicon-python-plain colored"></i> Python</span>
+                    <span class="tech-pill" title="Flask"><i class="devicon-flask-original"></i> Flask</span>
+                    <span class="tech-pill" title="JavaScript"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
+                    <span class="tech-pill" title="Tailwind CSS"><i class="devicon-tailwindcss-plain colored"></i> Tailwind CSS</span>
+                  </div>
+                </div>
+
+                <div class="project-card-photo-pane">
+                  <div
+                    class="project-photo-wrap is-interactive"
+                    role="button"
+                    tabindex="0"
+                    data-open-project="planora"
+                    aria-label="Inspect Planora architecture"
+                  >
+                    <picture>
+                      <source srcset="assets/planora.webp" type="image/webp" />
+                      <img
+                        src="assets/planora.png?v=1"
+                        alt="Planora travel app project preview"
+                        class="project-hero-photo"
+                        width="1200"
+                        height="800"
+                        loading="lazy"
+                      />
+                    </picture>
+                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 3: Expense Trail -->
+            <article class="stacked-project-card" data-index="2" data-project="expense-trail" style="--card-index: 2;">
+              <div class="project-card-header">
+                <div class="project-card-left">
+                  <span class="project-card-num">03</span>
+                  <div class="project-card-title-group">
+                    <span class="project-card-badge">Full Stack</span>
+                    <h3 class="project-card-title">Expense Trail</h3>
+                  </div>
+                </div>
+                <div class="project-card-actions">
+                  <button
+                    type="button"
+                    class="project-details-btn"
+                    data-open-project="expense-trail"
+                  >
+                    Architecture
+                  </button>
+                  <a
+                    href="https://expense-trail.vercel.app/"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="project-live-btn"
+                  >
+                    <span>Live Project</span>
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
+                  </a>
+                  <a
+                    href="https://github.com/varun9761/expense-trail"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="project-github-btn"
+                    aria-label="View Expense Trail on GitHub"
+                  >
+                    <i class="devicon-github-original" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="project-card-content">
+                <div class="project-card-info-pane">
+                  <p class="project-card-desc">
+                    A responsive personal finance management tool to record daily expenses, organize custom budget categories, and visualize spending trends.
+                  </p>
+                  <p class="project-card-note">
+                    Implemented persistent client-side state caching via LocalStorage for zero-latency data recovery and offline usability.
+                  </p>
+                  <div class="project-card-tech" aria-label="Expense Trail technologies">
+                    <span class="tech-pill" title="React"><i class="devicon-react-original colored"></i> React</span>
+                    <span class="tech-pill" title="JavaScript"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
+                    <span class="tech-pill" title="Tailwind CSS"><i class="devicon-tailwindcss-plain colored"></i> Tailwind CSS</span>
+                  </div>
+                </div>
+
+                <div class="project-card-photo-pane">
+                  <div
+                    class="project-photo-wrap is-interactive"
+                    role="button"
+                    tabindex="0"
+                    data-open-project="expense-trail"
+                    aria-label="Inspect Expense Trail architecture"
+                  >
+                    <picture>
+                      <source srcset="assets/expense-trail.webp" type="image/webp" />
+                      <img
+                        src="assets/expense-trail.png?v=2"
+                        alt="Expense Trail project preview"
+                        class="project-hero-photo"
+                        width="1200"
+                        height="800"
+                        loading="lazy"
+                      />
+                    </picture>
+                    <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 4: Word Scramble -->
+            <article class="stacked-project-card" data-index="3" data-project="word-scramble" style="--card-index: 3;">
+              <div class="project-card-header">
+                <div class="project-card-left">
+                  <span class="project-card-num">04</span>
+                  <div class="project-card-title-group">
+                    <span class="project-card-badge">Frontend</span>
+                    <h3 class="project-card-title">Word Scramble</h3>
+                  </div>
+                </div>
+                <div class="project-card-actions">
+                  <button
+                    type="button"
+                    class="project-details-btn"
+                    data-open-project="word-scramble"
+                  >
+                    Architecture
+                  </button>
+                  <a
+                    href="https://github.com/varun9761/Word-Scramble"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="project-live-btn"
+                  >
+                    <span>Source Code</span>
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
+                  </a>
+                  <a
+                    href="https://github.com/varun9761/Word-Scramble"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="project-github-btn"
+                    aria-label="View Word Scramble on GitHub"
+                  >
+                    <i class="devicon-github-original" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="project-card-content">
+                <div class="project-card-info-pane">
+                  <p class="project-card-desc">
+                    A word puzzle web app that challenges users to guess the correct word from scrambled letters while practicing logic, UI interaction, and game flow handling.
+                  </p>
+                  <p class="project-card-note">
+                    Interactive UI logic, clean front-end structure, and game-style user flow.
+                  </p>
+                  <div class="project-card-tech" aria-label="Word Scramble technologies">
+                    <span class="tech-pill" title="HTML5"><i class="devicon-html5-plain colored"></i> HTML5</span>
+                    <span class="tech-pill" title="CSS3"><i class="devicon-css3-plain colored"></i> CSS3</span>
+                    <span class="tech-pill" title="JavaScript"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
+                  </div>
+                </div>
+
+                <div class="project-card-photo-pane">
+                  <div
+                    class="project-photo-wrap is-interactive"
+                    role="button"
+                    tabindex="0"
+                    data-open-project="word-scramble"
+                    aria-label="Inspect Word Scramble architecture"
+                  >
+                    <picture>
+                      <source srcset="assets/word-scramble.webp" type="image/webp" />
+                      <img
+                        src="assets/word-scramble.png?v=2"
+                        alt="Word Scramble game preview"
+                        class="project-hero-photo"
+                        width="1200"
+                        height="800"
+                        loading="lazy"
+                      />
+                    </picture>
                     <span class="photo-inspect-badge" aria-hidden="true">Architecture &rarr;</span>
                   </div>
                 </div>
@@ -614,6 +786,14 @@
               possibilities <span></span> of tomorrow.
             </p>
           </div>
+
+          <footer class="footer-status-bar" aria-label="Portfolio live status">
+            <div class="footer-status-meta">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span>Built by Varun Kumar &bull; Noida (<time id="ist-clock">--:-- IST</time>)</span>
+            </div>
+            <a href="#home" class="back-to-top">&uarr; Back to Top</a>
+          </footer>
         </section>
       </main>
 
@@ -684,6 +864,101 @@
                 <i class="devicon-github-original" aria-hidden="true"></i>
               </a>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="project-modal-backdrop"
+        id="resume-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resume-modal-title"
+        hidden
+      >
+        <div class="project-modal resume-modal">
+          <div class="project-modal-header">
+            <div class="project-modal-title-group">
+              <div class="project-modal-meta">
+                <span class="project-modal-num">PDF</span>
+                <span class="project-modal-badge">ATS Resume</span>
+              </div>
+              <h3 class="project-modal-title" id="resume-modal-title">Varun Kumar &mdash; Resume</h3>
+            </div>
+            <button
+              type="button"
+              class="project-modal-close"
+              id="resume-close-btn"
+              aria-label="Close resume preview"
+            >
+              &times;
+            </button>
+          </div>
+
+          <div class="resume-modal-body">
+            <iframe
+              class="resume-pdf-frame"
+              id="resume-pdf-frame"
+              data-src="assets/VARUNRESUME.pdf#view=FitH"
+              title="Varun Kumar Resume PDF Preview"
+            ></iframe>
+            <div class="resume-mobile-fallback">
+              <p>
+                Inline PDF viewers vary across mobile browsers. Use the actions below to open or download the full PDF directly.
+              </p>
+            </div>
+          </div>
+
+          <div class="project-modal-footer">
+            <span class="resume-footer-note">Noida, UP &bull; varunkumardev92@gmail.com</span>
+            <div class="project-modal-links">
+              <a
+                href="assets/VARUNRESUME.pdf"
+                target="_blank"
+                rel="noreferrer"
+                class="modal-nav-btn"
+              >
+                Open Tab &#8599;
+              </a>
+              <a
+                href="assets/VARUNRESUME.pdf"
+                download
+                class="project-live-btn"
+              >
+                <span>Download PDF</span>
+                <span class="btn-arrow" aria-hidden="true">&darr;</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="cmd-backdrop"
+        id="command-palette"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Quick navigation command palette"
+        hidden
+      >
+        <div class="cmd-modal">
+          <div class="cmd-search-row">
+            <span class="cmd-search-icon" aria-hidden="true">&#8984;</span>
+            <input
+              type="text"
+              class="cmd-input"
+              id="cmd-input"
+              placeholder="Jump to project, section, resume, theme, or copy email..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <kbd class="cmd-esc">ESC</kbd>
+          </div>
+          <ul class="cmd-list" id="cmd-list" role="listbox" aria-label="Command palette options"></ul>
+          <div class="cmd-footer">
+            <span><kbd>&uarr;&darr;</kbd> Navigate</span>
+            <span><kbd>&#8629;</kbd> Execute</span>
+            <span><kbd>ESC</kbd> Close</span>
           </div>
         </div>
       </div>

@@ -1,0 +1,27 @@
+{
+  "name": "Varun Kumar | Full Stack Developer",
+  "short_name": "Varun VK",
+  "description": "Portfolio of Varun Kumar — MCA Candidate & Full Stack Software Engineer building scalable web applications with React, Node.js, Python, and PostgreSQL.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#04070d",
+  "theme_color": "#0a84ff",
+  "icons": [
+    {
+      "src": "assets/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

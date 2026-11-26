@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 — Page Not Found | Varun Kumar</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .not-found-shell {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+      .not-found-card {
+        width: min(620px, 100%);
+        padding: clamp(32px, 5vw, 56px);
+        border-radius: 36px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.36);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(28px) saturate(1.6);
+        -webkit-backdrop-filter: blur(28px) saturate(1.6);
+        text-align: center;
+        display: grid;
+        gap: 16px;
+        justify-items: center;
+      }
+      body[data-theme="dark"] .not-found-card {
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.035)),
+          rgba(12, 18, 30, 0.72);
+      }
+      .not-found-code {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(5rem, 18vw, 8.5rem);
+        line-height: 0.85;
+        background: linear-gradient(135deg, var(--accent), #7c3aed);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .not-found-tag {
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .not-found-copy {
+        color: var(--muted);
+        max-width: 420px;
+        line-height: 1.65;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient-aura" aria-hidden="true">
+      <span class="aura-orb aura-orb-1"></span>
+      <span class="aura-orb aura-orb-2"></span>
+      <span class="aura-orb aura-orb-3"></span>
+    </div>
+    <main class="not-found-shell">
+      <section class="not-found-card">
+        <span class="not-found-tag">ROUTE // 404 NOT FOUND</span>
+        <h1 class="not-found-code">404</h1>
+        <p class="not-found-copy">
+          The page you are looking for moved or does not exist. Let's get you back to the portfolio.
+        </p>
+        <a class="primary-button" href="/">Return to Portfolio</a>
+      </section>
+    </main>
+    <script>
+      const saved = localStorage.getItem("portfolio-theme");
+      const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.body.dataset.theme = saved || preferred;
+    </script>
+  </body>
+</html>

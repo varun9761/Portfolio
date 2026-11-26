@@ -15,6 +15,11 @@ const applyTheme = (theme) => {
   if (themeToggleText) {
     themeToggleText.textContent = theme === "dark" ? "Dark" : "Light";
   }
+
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeColorMeta) {
+    themeColorMeta.setAttribute("content", theme === "dark" ? "#04070d" : "#eef3f8");
+  }
 };
 
 const savedTheme = localStorage.getItem("portfolio-theme");
@@ -341,13 +346,18 @@ const initContactForm = () => {
   const statusEl = document.querySelector("#contact-status");
   if (!form || !statusEl) return;
 
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const defaultBtnLabel = submitBtn ? submitBtn.textContent.trim() : "Send";
+  let isSubmitting = false;
+
   const setStatus = (message, isError = false) => {
     statusEl.textContent = message;
     statusEl.classList.toggle("is-error", isError);
   };
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (isSubmitting) return;
 
     const formData = new FormData(form);
     const name = String(formData.get("name") || "").trim();
@@ -365,12 +375,60 @@ const initContactForm = () => {
       return;
     }
 
-    const subject = encodeURIComponent(`Portfolio Inquiry from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-    const mailtoUrl = `mailto:varunkumardev92@gmail.com?subject=${subject}&body=${body}`;
+    const subject = `Portfolio Inquiry from ${name}`;
+    const mailtoUrl = `mailto:varunkumardev92@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
 
-    setStatus("Opening your email app to send the message...");
-    window.location.href = mailtoUrl;
+    isSubmitting = true;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+    }
+    setStatus("Sending message...");
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/varunkumardev92@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          _subject: subject,
+          _template: "table",
+        }),
+      });
+
+      const payload = await response.json().catch(() => null);
+      const isSuccess =
+        response.ok &&
+        payload &&
+        (payload.success === true || payload.success === "true");
+
+      if (!isSuccess) {
+        throw new Error(payload?.message || "Direct form endpoint rejected request");
+      }
+
+      form.reset();
+      setStatus("Message sent directly to varunkumardev92@gmail.com! I will reply soon.");
+      if (typeof showToast === "function") {
+        showToast("Message delivered!");
+      }
+    } catch {
+      setStatus("Direct delivery unavailable — opening your email app as backup...");
+      if (typeof showToast === "function") {
+        showToast("Opening email client fallback...");
+      }
+      window.location.href = mailtoUrl;
+    } finally {
+      isSubmitting = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = defaultBtnLabel;
+      }
+    }
   });
 };
 
@@ -457,7 +515,7 @@ const initPointerSpotlight = () => {
   if (!supportsHover || prefersReducedMotion) return;
 
   const panels = document.querySelectorAll(
-    ".hero-stage, .about-panel, .skills-box, .social-box, .quote-panel, .stacked-project-card"
+    ".hero-stage, .about-panel, .skills-box, .social-box, .edu-card, .cert-card, .quote-panel, .stacked-project-card"
   );
 
   panels.forEach((panel) => {
@@ -511,62 +569,79 @@ const initPhotoTilt = () => {
 initPhotoTilt();
 
 // ==========================================================================
+// SHARED GLASS OVERLAY CONTROLLER
+// ==========================================================================
+const createModalOverlay = (backdrop, { focusEl = null, onBeforeOpen = null } = {}) => {
+  if (!backdrop) return null;
+
+  let lastTriggerEl = null;
+  let hideTimer = null;
+
+  const isOpen = () => !backdrop.hidden;
+
+  const open = (triggerEl = null) => {
+    lastTriggerEl = triggerEl || document.activeElement;
+    if (typeof onBeforeOpen === "function") onBeforeOpen();
+    if (hideTimer) {
+      window.clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+
+    backdrop.hidden = false;
+    document.body.classList.add("modal-open");
+
+    if (prefersReducedMotion) {
+      backdrop.classList.add("is-open");
+    } else {
+      window.requestAnimationFrame(() => {
+        backdrop.classList.add("is-open");
+      });
+    }
+
+    if (focusEl && typeof focusEl.focus === "function") {
+      window.requestAnimationFrame(() => focusEl.focus());
+    }
+  };
+
+  const close = ({ immediate = false, restoreFocus = true } = {}) => {
+    if (backdrop.hidden) return;
+    backdrop.classList.remove("is-open");
+
+    const finishHide = () => {
+      backdrop.hidden = true;
+      hideTimer = null;
+      const anotherOpen = document.querySelector(".project-modal-backdrop.is-open, .cmd-backdrop.is-open");
+      if (!anotherOpen) {
+        document.body.classList.remove("modal-open");
+      }
+      if (restoreFocus && lastTriggerEl && typeof lastTriggerEl.focus === "function") {
+        lastTriggerEl.focus();
+      }
+      lastTriggerEl = null;
+    };
+
+    if (immediate || prefersReducedMotion) {
+      finishHide();
+    } else {
+      hideTimer = window.setTimeout(finishHide, 220);
+    }
+  };
+
+  backdrop.addEventListener("click", (event) => {
+    if (event.target === backdrop) close();
+  });
+
+  return { open, close, isOpen };
+};
+
+// ==========================================================================
 // INTERACTIVE PROJECT ARCHITECTURE MODAL
 // ==========================================================================
-const PROJECT_ORDER = ["word-scramble", "expense-trail", "planora", "sharebite"];
+const PROJECT_ORDER = ["sharebite", "planora", "expense-trail", "word-scramble"];
 
 const PROJECT_DETAILS = {
-  "word-scramble": {
-    num: "01",
-    badge: "Frontend",
-    title: "Word Scramble",
-    summary:
-      "Interactive browser puzzle game built around real-time letter shuffling algorithms, multi-tier difficulty timers, and sub-10ms DOM state pipelines.",
-    highlights: [
-      "Built an interactive word unscramble game with dynamic letter shuffling algorithms, countdown timer intervals, and real-time input validation across 3 difficulty tiers.",
-      "Engineered lightweight DOM update pipelines and LocalStorage theme persistence (Dark/Light mode), guaranteeing sub-10ms UI response across all viewport sizes.",
-    ],
-    tech: ["HTML5", "CSS3", "JavaScript (ES6+)", "DOM Manipulation", "LocalStorage"],
-    image: "assets/word-scramble.png?v=2",
-    imageAlt: "Word Scramble game preview",
-    liveUrl: "https://github.com/varun9761/Word-Scramble",
-    githubUrl: "https://github.com/varun9761/Word-Scramble",
-  },
-  "expense-trail": {
-    num: "02",
-    badge: "Full Stack",
-    title: "Expense Trail",
-    summary:
-      "Responsive personal finance and budget management web app for recording daily expenses, organizing custom budget categories, and tracking spending trends.",
-    highlights: [
-      "Architected a responsive personal finance management tool to record daily expenses, organize custom budget categories, and visualize spending trends.",
-      "Implemented persistent client-side state caching via LocalStorage, ensuring zero-latency data recovery, offline usability, and error-free budget updates.",
-    ],
-    tech: ["React.js", "JavaScript", "Tailwind CSS", "LocalStorage", "Vercel"],
-    image: "assets/expense-trail.png?v=2",
-    imageAlt: "Expense Trail web app preview",
-    liveUrl: "https://expense-trail.vercel.app/",
-    githubUrl: "https://github.com/varun9761/expense-trail",
-  },
-  planora: {
-    num: "03",
-    badge: "Full Stack / Travel Engine",
-    title: "Planora",
-    summary:
-      "Smart full-stack travel planner and dynamic itinerary engine generating day-by-day plans, live weather forecasts, packing checklists, and PDF exports.",
-    highlights: [
-      "Developed an end-to-end travel itinerary platform utilizing Flask REST APIs to generate day-by-day itineraries, live meteorological forecasts, and hotel recommendations.",
-      "Integrated Open-Meteo & OpenTripMap APIs for dynamic weather forecasting, smart weather-aware packing checklists, and geocoded destination discovery across global cities.",
-      "Implemented dynamic multi-currency budget calculators and client-side caching to streamline trip planning, featuring 1-click popular destination chips and PDF export.",
-    ],
-    tech: ["Python", "Flask", "JavaScript", "Leaflet.js", "Open-Meteo API", "OpenTripMap", "REST APIs", "Tailwind CSS"],
-    image: "assets/planora.png?v=1",
-    imageAlt: "Planora smart travel planner preview",
-    liveUrl: "https://planora-flax.vercel.app/",
-    githubUrl: "https://github.com/varun9761/PLANORA",
-  },
   sharebite: {
-    num: "04",
+    num: "01",
     badge: "Full Stack / NGO Platform",
     title: "ShareBite",
     summary:
@@ -578,16 +653,69 @@ const PROJECT_DETAILS = {
       "Optimized PostgreSQL connection pooling and indexing, lowering query latency by ~35% across search, filters, and dynamic impact metric analytics.",
     ],
     tech: ["React 19", "Node.js", "Express.js", "PostgreSQL", "Tailwind CSS", "Leaflet Maps", "Overpass API", "JWT", "node-cron"],
-    image: "assets/sharebite.jpg",
+    image: "assets/sharebite.webp",
     imageAlt: "ShareBite surplus food recovery banner",
+    liveLabel: "Live Project",
     liveUrl: "https://sharebite-client-iota.vercel.app/",
     githubUrl: "https://github.com/varun9761/ShareBite",
+  },
+  planora: {
+    num: "02",
+    badge: "Full Stack / Travel Engine",
+    title: "Planora",
+    summary:
+      "Smart full-stack travel planner and dynamic itinerary engine generating day-by-day plans, live weather forecasts, packing checklists, and PDF exports.",
+    highlights: [
+      "Developed an end-to-end travel itinerary platform utilizing Flask REST APIs to generate day-by-day itineraries, live meteorological forecasts, and hotel recommendations.",
+      "Integrated Open-Meteo & OpenTripMap APIs for dynamic weather forecasting, smart weather-aware packing checklists, and geocoded destination discovery across global cities.",
+      "Implemented dynamic multi-currency budget calculators and client-side caching to streamline trip planning, featuring 1-click popular destination chips and PDF export.",
+    ],
+    tech: ["Python", "Flask", "JavaScript", "Leaflet.js", "Open-Meteo API", "OpenTripMap", "REST APIs", "Tailwind CSS"],
+    image: "assets/planora.webp",
+    imageAlt: "Planora smart travel planner preview",
+    liveLabel: "Live Project",
+    liveUrl: "https://planora-flax.vercel.app/",
+    githubUrl: "https://github.com/varun9761/PLANORA",
+  },
+  "expense-trail": {
+    num: "03",
+    badge: "Full Stack",
+    title: "Expense Trail",
+    summary:
+      "Responsive personal finance and budget management web app for recording daily expenses, organizing custom budget categories, and tracking spending trends.",
+    highlights: [
+      "Architected a responsive personal finance management tool to record daily expenses, organize custom budget categories, and visualize spending trends.",
+      "Implemented persistent client-side state caching via LocalStorage, ensuring zero-latency data recovery, offline usability, and error-free budget updates.",
+    ],
+    tech: ["React.js", "JavaScript", "Tailwind CSS", "LocalStorage", "Vercel"],
+    image: "assets/expense-trail.webp",
+    imageAlt: "Expense Trail web app preview",
+    liveLabel: "Live Project",
+    liveUrl: "https://expense-trail.vercel.app/",
+    githubUrl: "https://github.com/varun9761/expense-trail",
+  },
+  "word-scramble": {
+    num: "04",
+    badge: "Frontend",
+    title: "Word Scramble",
+    summary:
+      "Interactive browser puzzle game built around real-time letter shuffling algorithms, multi-tier difficulty timers, and sub-10ms DOM state pipelines.",
+    highlights: [
+      "Built an interactive word unscramble game with dynamic letter shuffling algorithms, countdown timer intervals, and real-time input validation across 3 difficulty tiers.",
+      "Engineered lightweight DOM update pipelines and LocalStorage theme persistence (Dark/Light mode), guaranteeing sub-10ms UI response across all viewport sizes.",
+    ],
+    tech: ["HTML5", "CSS3", "JavaScript (ES6+)", "DOM Manipulation", "LocalStorage"],
+    image: "assets/word-scramble.webp",
+    imageAlt: "Word Scramble game preview",
+    liveLabel: "Source Code",
+    liveUrl: "https://github.com/varun9761/Word-Scramble",
+    githubUrl: "https://github.com/varun9761/Word-Scramble",
   },
 };
 
 const initProjectModal = () => {
   const backdrop = document.querySelector("#project-modal");
-  if (!backdrop) return;
+  if (!backdrop) return null;
 
   const numEl = document.querySelector("#modal-project-num");
   const badgeEl = document.querySelector("#modal-project-badge");
@@ -603,8 +731,7 @@ const initProjectModal = () => {
   const nextBtn = document.querySelector("#modal-next-btn");
 
   let activeProjectId = PROJECT_ORDER[0];
-  let lastTriggerEl = null;
-  let hideTimer = null;
+  const overlay = createModalOverlay(backdrop, { focusEl: closeBtn });
 
   const renderProject = (projectId) => {
     const data = PROJECT_DETAILS[projectId];
@@ -639,51 +766,21 @@ const initProjectModal = () => {
       });
     }
 
-    if (liveLink) liveLink.href = data.liveUrl;
+    if (liveLink) {
+      liveLink.href = data.liveUrl;
+      const liveTextEl = liveLink.querySelector("span:first-child");
+      if (liveTextEl) liveTextEl.textContent = data.liveLabel || "Live Project";
+    }
     if (githubLink) {
       githubLink.href = data.githubUrl;
       githubLink.setAttribute("aria-label", `View ${data.title} on GitHub`);
     }
   };
 
-  const openModal = (projectId, triggerEl = null) => {
+  const openProject = (projectId, triggerEl = null) => {
     if (!PROJECT_DETAILS[projectId]) return;
-    lastTriggerEl = triggerEl;
     renderProject(projectId);
-
-    if (hideTimer) window.clearTimeout(hideTimer);
-    backdrop.hidden = false;
-    document.body.classList.add("modal-open");
-
-    if (prefersReducedMotion) {
-      backdrop.classList.add("is-open");
-    } else {
-      window.requestAnimationFrame(() => {
-        backdrop.classList.add("is-open");
-      });
-    }
-
-    if (closeBtn) closeBtn.focus();
-  };
-
-  const closeModal = () => {
-    if (backdrop.hidden) return;
-    backdrop.classList.remove("is-open");
-    document.body.classList.remove("modal-open");
-
-    const finishHide = () => {
-      backdrop.hidden = true;
-      if (lastTriggerEl && typeof lastTriggerEl.focus === "function") {
-        lastTriggerEl.focus();
-      }
-      lastTriggerEl = null;
-    };
-
-    if (prefersReducedMotion) {
-      finishHide();
-    } else {
-      hideTimer = window.setTimeout(finishHide, 220);
-    }
+    overlay.open(triggerEl);
   };
 
   const stepProject = (delta) => {
@@ -694,39 +791,332 @@ const initProjectModal = () => {
 
   document.querySelectorAll("[data-open-project]").forEach((trigger) => {
     trigger.addEventListener("click", () => {
-      openModal(trigger.getAttribute("data-open-project"), trigger);
+      openProject(trigger.getAttribute("data-open-project"), trigger);
     });
 
     if (trigger.getAttribute("role") === "button") {
       trigger.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          openModal(trigger.getAttribute("data-open-project"), trigger);
+          openProject(trigger.getAttribute("data-open-project"), trigger);
         }
       });
     }
   });
 
-  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+  if (closeBtn) closeBtn.addEventListener("click", () => overlay.close());
   if (prevBtn) prevBtn.addEventListener("click", () => stepProject(-1));
   if (nextBtn) nextBtn.addEventListener("click", () => stepProject(1));
 
-  backdrop.addEventListener("click", (event) => {
-    if (event.target === backdrop) {
-      closeModal();
-    }
-  });
-
   document.addEventListener("keydown", (event) => {
-    if (backdrop.hidden) return;
+    if (!overlay.isOpen()) return;
     if (event.key === "Escape") {
-      closeModal();
+      overlay.close();
     } else if (event.key === "ArrowLeft") {
       stepProject(-1);
     } else if (event.key === "ArrowRight") {
       stepProject(1);
     }
   });
+
+  return openProject;
 };
 
-initProjectModal();
+const openProjectModal = initProjectModal();
+
+// ==========================================================================
+// INLINE RESUME PDF MODAL
+// ==========================================================================
+const initResumeModal = () => {
+  const backdrop = document.querySelector("#resume-modal");
+  if (!backdrop) return null;
+
+  const frameEl = document.querySelector("#resume-pdf-frame");
+  const closeBtn = document.querySelector("#resume-close-btn");
+
+  const overlay = createModalOverlay(backdrop, {
+    focusEl: closeBtn,
+    onBeforeOpen: () => {
+      if (frameEl && !frameEl.getAttribute("src") && frameEl.dataset.src) {
+        frameEl.setAttribute("src", frameEl.dataset.src);
+      }
+    },
+  });
+
+  document.querySelectorAll("[data-open-resume]").forEach((trigger) => {
+    trigger.addEventListener("click", () => overlay.open(trigger));
+  });
+
+  if (closeBtn) closeBtn.addEventListener("click", () => overlay.close());
+
+  document.addEventListener("keydown", (event) => {
+    if (overlay.isOpen() && event.key === "Escape") {
+      overlay.close();
+    }
+  });
+
+  return (triggerEl = null) => overlay.open(triggerEl);
+};
+
+const openResumeModal = initResumeModal();
+
+// ==========================================================================
+// COMMAND PALETTE (CTRL+K / ⌘K)
+// ==========================================================================
+const initCommandPalette = () => {
+  const backdrop = document.querySelector("#command-palette");
+  const input = document.querySelector("#cmd-input");
+  const listEl = document.querySelector("#cmd-list");
+  const triggerBtn = document.querySelector("#cmd-trigger");
+  if (!backdrop || !input || !listEl) return;
+
+  const commands = [
+    {
+      label: "Inspect ShareBite Architecture",
+      hint: "Food recovery platform — React 19, Express 5, PostgreSQL, Overpass",
+      badge: "01",
+      keywords: "sharebite ngo food postgres leaflet architecture",
+      run: () => openProjectModal && openProjectModal("sharebite"),
+    },
+    {
+      label: "Inspect Planora Architecture",
+      hint: "Travel itinerary engine — Python, Flask, Open-Meteo API",
+      badge: "02",
+      keywords: "planora flask travel itinerary weather architecture",
+      run: () => openProjectModal && openProjectModal("planora"),
+    },
+    {
+      label: "Inspect Expense Trail Architecture",
+      hint: "Personal finance & category analytics — React, Tailwind",
+      badge: "03",
+      keywords: "expense trail finance budget react architecture",
+      run: () => openProjectModal && openProjectModal("expense-trail"),
+    },
+    {
+      label: "Inspect Word Scramble Architecture",
+      hint: "Interactive word puzzle — HTML5, CSS3, ES6+",
+      badge: "04",
+      keywords: "word scramble puzzle game frontend architecture",
+      run: () => openProjectModal && openProjectModal("word-scramble"),
+    },
+    {
+      label: "Preview Resume PDF",
+      hint: "Open Varun Kumar's ATS-verified resume in an inline preview modal",
+      badge: "PDF",
+      keywords: "resume cv preview pdf mca bsc education",
+      run: () => openResumeModal && openResumeModal(),
+    },
+    {
+      label: "Copy Email Address",
+      hint: "Copy varunkumardev92@gmail.com to clipboard",
+      badge: "Mail",
+      keywords: "email copy contact gmail hire",
+      run: async () => {
+        if (typeof copyTextToClipboard === "function") {
+          const ok = await copyTextToClipboard("varunkumardev92@gmail.com");
+          if (typeof showToast === "function") {
+            showToast(ok ? "Copied: varunkumardev92@gmail.com" : "Email: varunkumardev92@gmail.com");
+          }
+        }
+      },
+    },
+    {
+      label: "Toggle Dark / Light Theme",
+      hint: "Switch between Spatial Liquid Glass Dark and Light modes",
+      badge: "Theme",
+      keywords: "dark light mode theme appearance",
+      run: () => {
+        const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
+        localStorage.setItem("portfolio-theme", nextTheme);
+        applyTheme(nextTheme);
+        if (typeof showToast === "function") {
+          showToast(`Switched to ${nextTheme} mode`);
+        }
+      },
+    },
+    {
+      label: "Go to About & Education",
+      hint: "Academic timeline (MCA JSS Noida, B.Sc. CS), certifications, skills",
+      badge: "Section",
+      keywords: "about education mca bsc skills certifications jss invertis",
+      run: () => document.querySelector("#about")?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" }),
+    },
+    {
+      label: "Go to Projects Deck",
+      hint: "Browse all flagship projects & live deployments",
+      badge: "Section",
+      keywords: "projects deck portfolio work",
+      run: () => document.querySelector("#projects")?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" }),
+    },
+    {
+      label: "Go to Contact Form",
+      hint: "Send a direct message to Varun Kumar",
+      badge: "Section",
+      keywords: "contact message reach out",
+      run: () => document.querySelector("#contact")?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" }),
+    },
+    {
+      label: "Open ShareBite Live App",
+      hint: "https://sharebite-client-iota.vercel.app/",
+      badge: "External",
+      keywords: "sharebite live vercel demo",
+      run: () => window.open("https://sharebite-client-iota.vercel.app/", "_blank", "noopener,noreferrer"),
+    },
+    {
+      label: "Open GitHub Profile",
+      hint: "github.com/varun9761",
+      badge: "External",
+      keywords: "github source code repos",
+      run: () => window.open("https://github.com/varun9761", "_blank", "noopener,noreferrer"),
+    },
+  ];
+
+  let filtered = commands.slice();
+  let selectedIndex = 0;
+
+  const renderList = () => {
+    listEl.innerHTML = "";
+    if (filtered.length === 0) {
+      const empty = document.createElement("li");
+      empty.className = "cmd-empty";
+      empty.textContent = "No matching commands found.";
+      listEl.appendChild(empty);
+      return;
+    }
+
+    filtered.forEach((cmd, idx) => {
+      const li = document.createElement("li");
+      li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", String(idx === selectedIndex));
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `cmd-item${idx === selectedIndex ? " is-selected" : ""}`;
+
+      const main = document.createElement("div");
+      main.className = "cmd-item-main";
+
+      const title = document.createElement("span");
+      title.textContent = cmd.label;
+      const hint = document.createElement("span");
+      hint.className = "cmd-item-hint";
+      hint.textContent = cmd.hint;
+
+      main.appendChild(title);
+      main.appendChild(hint);
+
+      const badge = document.createElement("span");
+      badge.className = "cmd-item-badge";
+      badge.textContent = cmd.badge;
+
+      btn.appendChild(main);
+      btn.appendChild(badge);
+      btn.addEventListener("mouseenter", () => {
+        selectedIndex = idx;
+        updateSelectionClass();
+      });
+      btn.addEventListener("click", () => executeCommand(cmd));
+
+      li.appendChild(btn);
+      listEl.appendChild(li);
+    });
+  };
+
+  const updateSelectionClass = () => {
+    const buttons = listEl.querySelectorAll(".cmd-item");
+    buttons.forEach((btn, idx) => {
+      const isSelected = idx === selectedIndex;
+      btn.classList.toggle("is-selected", isSelected);
+      btn.parentElement?.setAttribute("aria-selected", String(isSelected));
+    });
+  };
+
+  const overlay = createModalOverlay(backdrop, {
+    focusEl: input,
+    onBeforeOpen: () => {
+      input.value = "";
+      filtered = commands.slice();
+      selectedIndex = 0;
+      renderList();
+    },
+  });
+
+  const executeCommand = (cmd) => {
+    if (!cmd) return;
+    overlay.close({ immediate: true, restoreFocus: false });
+    cmd.run();
+  };
+
+  if (triggerBtn) {
+    triggerBtn.addEventListener("click", () => overlay.open(triggerBtn));
+  }
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim().toLowerCase();
+    filtered = query
+      ? commands.filter((cmd) =>
+          `${cmd.label} ${cmd.hint} ${cmd.badge} ${cmd.keywords}`.toLowerCase().includes(query)
+        )
+      : commands.slice();
+    selectedIndex = 0;
+    renderList();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      if (overlay.isOpen()) {
+        overlay.close();
+      } else {
+        overlay.open(triggerBtn || document.activeElement);
+      }
+      return;
+    }
+
+    if (!overlay.isOpen()) return;
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      overlay.close();
+    } else if (event.key === "ArrowDown" && filtered.length > 0) {
+      event.preventDefault();
+      selectedIndex = (selectedIndex + 1) % filtered.length;
+      updateSelectionClass();
+      listEl.children[selectedIndex]?.scrollIntoView({ block: "nearest" });
+    } else if (event.key === "ArrowUp" && filtered.length > 0) {
+      event.preventDefault();
+      selectedIndex = (selectedIndex - 1 + filtered.length) % filtered.length;
+      updateSelectionClass();
+      listEl.children[selectedIndex]?.scrollIntoView({ block: "nearest" });
+    } else if (event.key === "Enter" && filtered.length > 0) {
+      event.preventDefault();
+      executeCommand(filtered[selectedIndex]);
+    }
+  });
+};
+
+initCommandPalette();
+
+// ==========================================================================
+// LIVE IST CLOCK
+// ==========================================================================
+const initLiveClock = () => {
+  const clockEl = document.querySelector("#ist-clock");
+  if (!clockEl) return;
+
+  const formatter = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const updateClock = () => {
+    clockEl.textContent = `${formatter.format(new Date()).toUpperCase()} IST`;
+  };
+
+  updateClock();
+  window.setInterval(updateClock, 30000);
+};
+
+initLiveClock();
